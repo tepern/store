@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Database\Seeders\ProductCategorySeeder;
+use Database\Seeders\AdminMenuSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,5 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(ProductCategorySeeder::class);
+        $this->call(AdminMenuSeeder::class);
     }
 }
