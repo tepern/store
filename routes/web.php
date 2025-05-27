@@ -20,3 +20,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+$groupData = [
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'store',
+];
+Route::group($groupData, function() {
+    $methods = ['index', 'show'];
+    Route::resource('products','ProductController')->only($methods)->names('products');
+
+    
+});
