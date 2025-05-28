@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products\Order;
 use App\Models\Products\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,22 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $fields = [
-            'id',
-            'name',
-            'price',
-            'category_id'
-        ];
-
-        $paginator = Product::select($fields)
-            ->orderBy('id', 'DESC')
-            ->with([
-                'category' => function($query) {
-                    $query->select(['id', 'name']);
-                }])
-            ->paginate(25);
-
-        return view('products.index', compact('paginator'));
+        //
     }
 
     /**
@@ -37,9 +24,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $order = new Order();
+        $product = Product::findOrFail($id);
+        $customer = Auth::user()->name ?? null;
+        return view('orders.create', compact('order', 'product', 'customer'));
     }
 
     /**
@@ -50,7 +40,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input();
+        $order = new Order();
+        $order->product_id = $data['product_id'];
+        $order->customer = $data['customer'] ?? Auth::user()->name;
+        $order->status = 'new';
+        $order->amount = $data['amount'];
+        $order->comment = $data['comment'];
+
+        $order->save();
+
+        if ($order) {
+            return redirect()->route('order.show', [$order->id])
+            ->with(['success' => 'Успешно сохранено']);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
 
     /**
@@ -61,14 +67,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id)
-        ->with([
-            'category' => function($query) {
-                $query->select(['id', 'name']);
-            }])->first();
-        
-        return view('products.show',
-            compact('product'));
+        $order = Order::findOrFail($id);
+        $product = Product::findOrFail($order->product_id);
+        return view('orders.show', compact('order', 'product'));
     }
 
     /**

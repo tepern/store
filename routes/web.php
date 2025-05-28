@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -27,7 +30,9 @@ $groupData = [
 ];
 Route::group($groupData, function() {
     $methods = ['index', 'show'];
-    Route::resource('products','ProductController')->only($methods)->names('products');
-
-    
+    Route::resource('products','ProductController')->only($methods)->names('products');   
 });
+
+Route::get('/order/{id}', [OrderController::class, 'create'])->name('order');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('order.show');
