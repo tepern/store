@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderStoreRequest;
 use App\Models\Products\Order;
 use App\Models\Products\Product;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
         $data = $request->input();
         $order = new Order();
