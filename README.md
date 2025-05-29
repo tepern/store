@@ -8,7 +8,7 @@ Node.js
 
 ## Installation
 
-git cline https://github.com/tepern/store.git
+git clone https://github.com/tepern/store.git
 
 cd store
 
