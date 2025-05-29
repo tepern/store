@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('customer');
             $table->integer('product_id')->unsigned();
             $table->integer('amount')->unsigned()->default(1);
-            $table->enum('status', ['new', 'complited'])->default('new');
+            $table->enum('status', ['new', 'completed'])->default('new');
             $table->text('comment')->nullable();
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products');

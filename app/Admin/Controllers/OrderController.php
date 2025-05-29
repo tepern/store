@@ -26,10 +26,9 @@ class OrderController extends AdminController
     {
         $grid = new Grid(new Order());
 
-        $grid->column('id', __('Id'));
+        $grid->column('id', __('Номер заказа'));
         $grid->column('customer', __('ФИО покупателя'));
         $grid->column('status', __('Статус заказа'));
-        $grid->column('comment', __('Комментарий покупателя'))->width(200);
         $grid->column('created_at', __('Дата создания'));
         $grid->column('Итоговая цена')->display(function () {
             return $this->amount * $this->product->price;
@@ -47,14 +46,10 @@ class OrderController extends AdminController
     {
         $show = new Show(Order::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('customer', __('Customer'));
-        $show->field('product_id', __('Product id'));
-        $show->field('amount', __('Amount'));
-        $show->field('status', __('Status'));
-        $show->field('comment', __('Comment'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('customer', __('ФИО покупателя'));
+        $show->field('status', __('Статус заказа'));
+        $show->field('comment', __('Комментарий покупателя'));
+        $show->field('created_at', __('Дата создания'));
 
         return $show;
     }
@@ -67,13 +62,12 @@ class OrderController extends AdminController
     protected function form()
     {
         $form = new Form(new Order());
-
-        $form->text('customer', __('Customer'));
-        $form->number('product_id', __('Product id'));
-        $form->number('amount', __('Amount'))->default(1);
-        $form->select('status', __('Status'))->default('new');
-        $form->textarea('comment', __('Comment'));
-
+        
+        $form->text('customer', __('ФИО покупателя'))->rules('required|string|min:5|max:255');
+        $form->select('status', __('Статус заказа'))->options(['new' => 'Новый', 'completed' => 'Выполнен'])->rules('required|string');
+        $form->textarea('comment', __('Комментарий покупателя'))->rules('string|max:2000');
+        $form->display('created_at', 'Дата создания')->readonly();
+        
         return $form;
     }
 }

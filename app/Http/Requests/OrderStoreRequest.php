@@ -24,9 +24,9 @@ class OrderStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'max:200',
+            'comment' => 'max:2000',
             'amount' => 'required|integer|min:1|max:200',
-            'customer' => 'string|max:500',
+            'customer' => 'string|max:255',
             'product_id' => 'required|integer|exists:products,id',
         ];
     }
