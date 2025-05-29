@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(ProductCategorySeeder::class);
+        $this->call(AdminUserRolePermissionSeeder::class);
         $this->call(AdminMenuSeeder::class);
     }
 }

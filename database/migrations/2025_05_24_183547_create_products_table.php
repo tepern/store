@@ -20,7 +20,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 13, 2);
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('product_categories');
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('product_categories')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

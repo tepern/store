@@ -27,6 +27,27 @@ class AdminMenuSeeder extends Seeder
 
         $this->createDefaultMenu();
         $this->createProductMenu($this->mainAdminRole);
+        $this->createOrderMenu($this->mainAdminRole);
+    }
+
+    /**
+     * @param Role $role
+     * @return void
+     */
+    private function createOrderMenu(Role $role): void
+    {
+        $menu = Menu::create([
+            'parent_id' => 0,
+            'order'     => 130,
+            'title'     => 'Заказы',
+            'icon'      => 'fa-shopping-cart',
+            'uri'       => 'orders',
+        ]);
+
+        $menu->roles()->detach($role);
+        $menu->roles()->detach($this->mainAdminRole);
+        $menu->roles()->attach($role);
+        $menu->roles()->attach($this->mainAdminRole);
     }
 
     /**
@@ -40,7 +61,7 @@ class AdminMenuSeeder extends Seeder
             'order'     => 120,
             'title'     => 'Товары',
             'icon'      => 'fa-fire',
-            'uri'       => 'cities',
+            'uri'       => 'products',
         ]);
 
         $menu->roles()->detach($role);

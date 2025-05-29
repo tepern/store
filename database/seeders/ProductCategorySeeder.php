@@ -16,7 +16,6 @@ class ProductCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('product_categories')->truncate();
         $categories = [
             [
                 'name' => 'легкий'
